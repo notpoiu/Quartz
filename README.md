@@ -19,8 +19,9 @@ To check which functions are supported by your current executor:
 -- https://discord.gg/FJcJMuze7S
 local Quartz = loadstring(game:HttpGetAsync("https://github.com/notpoiu/Quartz/releases/latest/download/Quartz.luau"))()
 
--- Create a new tester with a timeout of 5 seconds
-local Tester = Quartz.new(5)
+local Tester = Quartz.new({
+    Timeout = 5
+})
 
 -- Run specific tests
 -- local RequireResult = Tester:Test("require") -- boolean
@@ -50,6 +51,11 @@ local Tester = Quartz.new()
 
 -- Run tests to see what's missing
 Tester:TestAll()
+
+-- Print a summary of results with a custom callback
+Tester:PrintResults(function(testIdx, name, passed, message)
+    print(testIdx, name, passed, message)
+end)
 
 -- Patch the current environment with available replacements
 Tester:PatchEnvironment()

@@ -5,6 +5,7 @@ local TestOrchestrator = require(script.Tests.Orchestrator)
 local PathResolver = require(script.Utils.PathResolver)
 local Levenshtein = require(script.Utils.Levenshtein)
 local SafeLoader = require(script.Utils.SafeLoader)
+local Validate = require(script.Utils.Validator)
 
 local Requirer = SafeLoader.new()
 
@@ -25,12 +26,31 @@ end
 local Quartz = {}
 Quartz.__index = Quartz
 
-function Quartz.new(timeout: number?)
+--// Types \\--
+type Options = {
+	Timeout: number?
+}
+
+type CustomResultProcessor = (
+	testIdx: number,
+	name: string,
+	passed: boolean,
+	message: string
+) -> ()
+
+--// Validator Templates \\--
+local Template = {
+	Timeout = 15
+}
+
+function Quartz.new(options: Options)
+	options = Validate(options, Template)
+
     return setmetatable({
         TestResultCache = {},
         TestErrorMessageCache = {},
         TestSuccessMessageCache = {},
-        Timeout = timeout or 15
+        Timeout = options.Timeout
     }, Quartz)
 end
 
@@ -177,7 +197,7 @@ function Quartz.FormatResult(func: string, success: boolean, errorMessage: any)
 	)
 end
 
-function Quartz:PrintResults()
+function Quartz:PrintResults(callback: CustomResultProcessor?)
 	local SuccessCount, TotalCount = 0, 0
 	local PrintedModules = {}
 	
@@ -190,7 +210,11 @@ function Quartz:PrintResults()
 		PrintedModules[testModule] = true
 		
 		local message = self.TestSuccessMessageCache[func] or self.TestErrorMessageCache[func]
-		print(Quartz.FormatResult(func, result, message))
+		if callback then
+			callback(TotalCount, func, result, message)
+		else
+			print(Quartz.FormatResult(func, result, message))
+		end
 
 		TotalCount += 1
 		if result then
@@ -198,7 +222,9 @@ function Quartz:PrintResults()
 		end
 	end
 
-	print("🛠️ Total working:", tostring(SuccessCount) .. "/" .. tostring(TotalCount))
+	if not callback then
+		print("🛠️ Total working:", tostring(SuccessCount) .. "/" .. tostring(TotalCount))
+	end
 end
 
 --// Replacement \\--
