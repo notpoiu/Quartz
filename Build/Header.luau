@@ -8,5 +8,6 @@
 
     Author: upio
     GitHub: https://github.com/notpoiu/Quartz
+    Discord: https://discord.gg/FJcJMuze7S
 
 --]]

@@ -16,7 +16,8 @@ Quartz is a comprehensive testing and polyfill framework designed for Roblox Exe
 To check which functions are supported by your current executor:
 
 ```lua
-local Quartz = loadstring(game:HttpGetAsync(""))()
+-- https://discord.gg/FJcJMuze7S
+local Quartz = loadstring(game:HttpGetAsync("https://github.com/notpoiu/Quartz/releases/latest/download/Quartz.luau"))()
 
 -- Create a new tester with a timeout of 5 seconds
 local Tester = Quartz.new(5)
@@ -41,7 +42,9 @@ end
 To automatically fix missing or broken functions in your environment:
 
 ```lua
-local Quartz = loadstring(game:HttpGetAsync(""))()
+-- https://discord.gg/FJcJMuze7S
+local Quartz = loadstring(game:HttpGetAsync("https://github.com/notpoiu/Quartz/releases/latest/download/Quartz.luau"))()
+
 -- Default timeout is 15 seconds
 local Tester = Quartz.new()
 
