@@ -337,7 +337,7 @@ function Quartz:PatchEnvironment(funcOrLevel: number? | ((...any) -> ...any)?, f
 end
 
 function Quartz:GetFunction(func: string)
-    if self:Test(func) then
+    if not TestOrchestrator.Tests[func] or self:Test(func) then
         return PathResolver.ResolvePath(getfenv(), func)
     end
     
