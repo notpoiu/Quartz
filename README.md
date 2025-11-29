@@ -65,6 +65,56 @@ Tester:PatchEnvironment()
 local require = Tester:GetFunction("require")
 ```
 
+### Misc
+
+```lua
+print(Tester:GetExecutorName(), Tester:SupportsFileSystem() and "Supports FileSystem" or "Doesn't support FileSystem")
+
+-- Get all available patches
+local Pollyfills = Tester:GetAvailablePatches()
+
+for _, name in next, Pollyfills do
+    print("Replacement for " .. name .. " is available")
+end
+
+-- Clear the cache
+Tester:ClearCache()
+
+-- Get results
+local Results = Tester:GetResults()
+
+for func, result in next, Results do
+    print(func, result)
+end
+
+-- Get errors messages
+local Errors = Tester:GetErrors()
+
+for func, error in next, Errors do
+    print(func, error)
+end
+
+-- Get successes messages
+local Successes = Tester:GetSuccesses()
+
+for func, success in next, Successes do
+    print(func, success)
+end
+
+-- patch environement of specific callback
+local env = getfenv()
+local test = function()
+    print(getfenv() == env and "i am not in a patched environement" or "i am in a patched environement")
+end
+
+test()
+
+Tester:PatchEnvironment(test)
+
+test()
+
+```
+
 ## Prerequisites
 
 To enhance your work environment, I recommend installing all the recommended [extensions](.vscode/extensions.json).

@@ -237,7 +237,10 @@ function Quartz:GetAvailablePatches()
     return Replacements
 end
 
-function Quartz:PatchEnvironment(functionsToReplace: { [string]: any }?, funcOrLevel: number? | ((...any) -> ...any)?)
+function Quartz:PatchEnvironment(funcOrLevel: number? | ((...any) -> ...any)?, functionsToReplace: { [string]: any }?)
+	assert(typeof(funcOrLevel) == "number" or typeof(funcOrLevel) == "function", "Expected funcOrLevel to be a number or function, got " .. typeof(funcOrLevel))
+	assert(typeof(functionsToReplace) == "table" or functionsToReplace == nil, "Expected functionsToReplace to be a table, got " .. typeof(functionsToReplace))
+
 	local Level = funcOrLevel or 2
 	local Env = getfenv(Level)
 	local ReplacementsToUse = {}
