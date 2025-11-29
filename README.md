@@ -53,7 +53,7 @@ local Tester = Quartz.new()
 Tester:TestAll()
 
 -- Print a summary of results with a custom callback
-Tester:PrintResults(function(testIdx, name, passed, message)
+Tester:PrintResults(function(testIdx: number, name: string, passed: boolean, message: string)
     print(testIdx, name, passed, message)
 end)
 
