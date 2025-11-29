@@ -173,6 +173,8 @@ end
 --// Getters & Setters \\--
 function Quartz:ClearCache()
     self.TestResultCache = {}
+	self.TestErrorMessageCache = {}
+	self.TestSuccessMessageCache = {}
 end
 
 function Quartz:GetResults()
