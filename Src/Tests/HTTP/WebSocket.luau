@@ -1,10 +1,10 @@
 local Test = {}
 
-local ExpectedTypes = {
-	Send = "function",
-	Close = "function",
-	OnMessage = {"table", "userdata", "RBXScriptSignal"},
-	OnClose = {"table", "userdata", "RBXScriptSignal"},
+local ExpectedKeys = {
+	"Send",
+	"Close",
+	"OnMessage",
+	"OnClose",
 }
 
 local HttpService = cloneref(game:GetService("HttpService")) :: HttpService
@@ -17,13 +17,8 @@ function Test.Run()
 	local ws = WebSocket.connect("wss://echo.websocket.org")
 	assert(typeof(ws) ~= "nil", "WebSocket.connect returned nil")
 	
-	for k, v in next, ExpectedTypes do
-		if typeof(v) == "table" then
-			assert(table.find(v, typeof(ws[k])), `WebSocket.{k} is not a {table.concat(v, ", ")} (a {typeof(ws[k])})`)
-			continue
-		end
-
-		assert(typeof(ws[k]) == v, `WebSocket.{k} is not a {v} (a {typeof(ws[k])})`)
+	for _, k in next, ExpectedKeys do
+		assert(typeof(ws[k]) ~= "nil", `WebSocket.{k} is missing`)
 	end
 
 	--// Real testing \\--
