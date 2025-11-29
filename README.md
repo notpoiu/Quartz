@@ -109,7 +109,8 @@ end
 
 test()
 
-Tester:PatchEnvironment(test)
+-- Only patch "fireproximityprompt" if broken in test or add fireproximityprompt aliases
+Tester:PatchEnvironment(test, { "fireproximityprompt" })
 
 test()
 
