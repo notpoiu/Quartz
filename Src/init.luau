@@ -79,6 +79,10 @@ function Quartz:_InternalTest(func: string)
 	--// Collect all names for this test (primary + aliases) \\--
 	local AllNames = { func }
     do
+		if not table.find(AllNames, TestModuleInst.Name) then
+			table.insert(AllNames, TestModuleInst.Name)
+		end
+
         for _, alias in next, TestModule.Aliases or {} do
             if table.find(AllNames, alias) then
                 continue
@@ -211,11 +215,12 @@ function Quartz:PrintResults(callback: CustomResultProcessor?)
 		end
 		PrintedModules[testModule] = true
 		
-		local message = self.TestSuccessMessageCache[func] or self.TestErrorMessageCache[func]
+		local displayName = testModule.Name
+		local message = self.TestSuccessMessageCache[displayName] or self.TestErrorMessageCache[displayName]
 		if callback then
-			callback(TotalCount, func, result, message)
+			callback(TotalCount, displayName, result, message)
 		else
-			print(Quartz.FormatResult(func, result, message))
+			print(Quartz.FormatResult(displayName, result, message))
 		end
 
 		TotalCount += 1
