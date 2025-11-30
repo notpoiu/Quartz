@@ -174,6 +174,40 @@ function Quartz:TestAll()
 	return Results
 end
 
+function Quartz:TestAllExcluding(excluded: { string } | string)
+    if typeof(excluded) == "string" then
+        excluded = { excluded }
+    end
+
+	local Results = {}
+	local TestedModules = {}
+	local ExcludedModules = {}
+
+	--// Resolve Excluded Modules \\--
+	for _, name in next, excluded do
+		local testModule = TestOrchestrator.Tests[name]
+		if testModule then
+			ExcludedModules[testModule] = true
+		end
+	end
+	
+	for func, testModule in next, TestOrchestrator.Tests do
+		if ExcludedModules[testModule] then
+			continue
+		end
+
+		if TestedModules[testModule] then
+			Results[func] = self.TestResultCache[func]
+			continue
+		end
+		
+		TestedModules[testModule] = true
+		Results[func] = self:_InternalTest(func)
+	end
+
+	return Results
+end
+
 --// Getters & Setters \\--
 function Quartz:ClearCache()
     self.TestResultCache = {}
