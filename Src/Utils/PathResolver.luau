@@ -2,9 +2,12 @@ local PathResolver = {}
 
 function PathResolver.ResolvePath(base, path)
     for _, Segment in path:split(".") do
-        assert(base[Segment] ~= nil, `Failed to resolve path {path} at segment {Segment}`)
-        
+        --// assert(base[Segment] ~= nil, `Failed to resolve path {path} at segment {Segment}`)
         base = base[Segment]
+        
+        if not base then
+            return nil
+        end
     end
 
     return base
