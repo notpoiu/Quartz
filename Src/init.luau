@@ -13,7 +13,7 @@ local Requirer = SafeLoader.new()
 local ExecutorName, _ExecutorVersion
 do
     local Success, _ = pcall(function()
-        local identifyexec = identifyexecutor and identifyexecutor() or function() return "Unknown", "0.0.0.0" end
+        local identifyexec = typeof(identifyexecutor) == "function" and identifyexecutor or function() return "Unknown", "0.0.0.0" end
         ExecutorName, _ExecutorVersion = identifyexec()
     end)
 
