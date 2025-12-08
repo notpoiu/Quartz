@@ -68,7 +68,8 @@ local require = Tester:GetFunction("require")
 ### Misc
 
 ```lua
-print(Tester:GetExecutorName(), Tester:SupportsFileSystem() and "Supports FileSystem" or "Doesn't support FileSystem")
+print(Tester:GetExecutorName(), "Version:", Tester:GetExecutorVersion())
+print(Tester:SupportsFileSystem() and "Supports FileSystem" or "Doesn't support FileSystem")
 
 -- Get all available patches
 local Pollyfills = Tester:GetAvailablePatches()

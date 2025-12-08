@@ -10,15 +10,15 @@ local Validate = require(script.Utils.Validator)
 local Requirer = SafeLoader.new()
 
 --// Constants \\--
-local ExecutorName, _ExecutorVersion
+local ExecutorName, ExecutorVersion
 do
     local Success, _ = pcall(function()
         local identifyexec = typeof(identifyexecutor) == "function" and identifyexecutor or function() return "Unknown", "0.0.0.0" end
-        ExecutorName, _ExecutorVersion = identifyexec()
+        ExecutorName, ExecutorVersion = identifyexec()
     end)
 
     if not Success then
-        ExecutorName, _ExecutorVersion = "Unknown", "0.0.0.0"
+        ExecutorName, ExecutorVersion = "Unknown", "0.0.0.0"
     end
 end
 
@@ -401,6 +401,10 @@ end
 --// Helper Methods \\--
 function Quartz:GetExecutorName()
 	return ExecutorName
+end
+
+function Quartz:GetExecutorVersion()
+	return ExecutorVersion
 end
 
 function Quartz:SupportsFileSystem()
