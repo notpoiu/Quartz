@@ -119,7 +119,7 @@ function Quartz:_InternalTest(func: string)
 	repeat task.wait() until DidTestFinish or tick() - start > self.Timeout
 
 	if not DidTestFinish then
-		pcall(coroutine.close, TestThread)
+		pcall(task.cancel, TestThread)
 		Result = "Test timed out."
 	end
 
