@@ -5,7 +5,15 @@ function Replacement.CreateFunctionPatch(Quartz)
 		return nil
 	end
 
-	local Success, _ = pcall(setfflag, "WebSocketServiceEnableClientCreation", "true")
+	local Success = false
+	for _, value in { "true", true, 1 } do
+		Success, _ = pcall(setfflag, "WebSocketServiceEnableClientCreation", value)
+		
+		if Success then
+			break
+		end
+	end
+
 	if not Success then
 		return nil
 	end
