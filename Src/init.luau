@@ -28,7 +28,8 @@ Quartz.__index = Quartz
 
 --// Types \\--
 type Options = {
-	Timeout: number?
+	Timeout: number?,
+	AllowFFlagPolyfills: boolean?
 }
 
 type CustomResultProcessor = (
@@ -40,7 +41,8 @@ type CustomResultProcessor = (
 
 --// Validator Templates \\--
 local Template = {
-	Timeout = 15
+	Timeout = 15,
+	AllowFFlagPolyfills = true
 }
 
 function Quartz.new(options: Options)
@@ -50,7 +52,8 @@ function Quartz.new(options: Options)
         TestResultCache = {},
         TestErrorMessageCache = {},
         TestSuccessMessageCache = {},
-        Timeout = options.Timeout
+        Timeout = options.Timeout,
+        AllowFFlagPolyfills = options.AllowFFlagPolyfills
     }, Quartz)
 end
 
@@ -145,12 +148,44 @@ function Quartz:_InternalTest(func: string)
 end
 
 function Quartz:Test(funcs: { string } | string)
+	local OriginFunctionPatch = false
+	do
+		for Level = 2, 10 do
+			local func, name = debug.info(Level, "fn")
+			if not func then
+				break
+			end
+			
+			if name == "CreateFunctionPatch" then
+				OriginFunctionPatch = true
+				break
+			end
+		end
+	end
+
     if typeof(funcs) == "string" then
+		if
+			not self.AllowFFlagPolyfills and
+			OriginFunctionPatch and
+			(funcs == "getfflag" or funcs == "setfflag")
+		then
+			return false
+		end
+
         return self:_InternalTest(funcs)
     end
 
     local Results = {}
     for _, func in next, funcs do
+		if
+			not self.AllowFFlagPolyfills and
+			OriginFunctionPatch and
+			(func == "getfflag" or func == "setfflag")
+		then
+			Results[func] = false
+			continue
+		end
+
         Results[func] = self:_InternalTest(func)
     end
 
