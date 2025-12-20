@@ -28,7 +28,15 @@ function Replacement.CreateFunctionPatch(Quartz)
 
     --// debug.loadmodule method \\--
     if Quartz:Test("setfflag") then
-		local Success, _ = pcall(setfflag, "EnableLoadModule", "true")
+		local Success = false
+        for _, value in { "true", true, 1 } do
+		    Success, _ = pcall(setfflag, "WebSocketServiceEnableClientCreation", value)
+		
+		    if Success then
+		        break
+		    end
+		end
+		
         if not Success then
             return LoadstringRequire
         end
