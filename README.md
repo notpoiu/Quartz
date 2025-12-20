@@ -20,7 +20,8 @@ To check which functions are supported by your current executor:
 local Quartz = loadstring(game:HttpGetAsync("https://github.com/notpoiu/Quartz/releases/latest/download/Quartz.luau"))()
 
 local Tester = Quartz.new({
-    Timeout = 5
+    Timeout = 5,
+    AllowFFlagPolyfills = true -- Allow polyfills that use fflags, can disable if you don't want to get detected by roblox's fflag detections, default is true.
 })
 
 -- Run specific tests
