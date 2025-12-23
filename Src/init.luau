@@ -192,6 +192,16 @@ function Quartz:Test(funcs: { string } | string)
     return Results
 end
 
+function Quartz:GetTests()
+	local Tests = {}
+
+	for func, testModule in next, TestOrchestrator.Tests do
+		table.insert(Tests, func)
+	end
+
+	return Tests
+end
+
 function Quartz:TestAll()
 	local Results = {}
 	local TestedModules = {}
