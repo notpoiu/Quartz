@@ -11,16 +11,23 @@ function Test.Run()
 		triggered = true
 
 		part:Destroy()
+		prompt:Destroy()
 		part = nil
+		prompt = nil
 	end)
 	
 	task.delay(0.11, function()
-		if not part then return end
+		if prompt then
+			prompt.Enabled = false
+			prompt.MaxActivationDistance = 0
+			prompt:Destroy()
+			prompt = nil
+		end
 
-		prompt.Enabled = false
-		prompt.MaxActivationDistance = 0
-
-		part:Destroy()
+		if part then
+			part:Destroy()
+			part = nil
+		end
 	end)
 
 	fireproximityprompt(prompt)
