@@ -10,10 +10,11 @@ function Test.Run()
 	prompt.Triggered:Once(function()
 		triggered = true
 
-		part:Destroy()
 		prompt:Destroy()
-		part = nil
 		prompt = nil
+		
+		part:Destroy()
+		part = nil
 	end)
 	
 	task.delay(0.11, function()
