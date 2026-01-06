@@ -13,7 +13,7 @@ function Test.Run()
 
 	local cfuncname = newcclosure(func, "tuff")
 	assert(debug.info(cfuncname, "n") == "tuff", "C closure name is supposed to be 'tuff'")
-	assert(debug.info(cfuncname, "S") == "[C]", "C closure source is supposed to be [C] (#2)")
+	assert(debug.info(cfuncname, "s") == "[C]", "C closure source is supposed to be [C] (#2)")
 end
 
 return Test
