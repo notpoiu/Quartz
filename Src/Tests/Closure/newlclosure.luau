@@ -1,4 +1,3 @@
-local newlclosure = require(script.Parent.Parent.Parent.Replacements.Closure.newlclosure)
 local Test = {}
 
 function Test.Run()
