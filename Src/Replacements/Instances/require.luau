@@ -9,6 +9,7 @@ function Replacement.CreateFunctionPatch(Quartz)
     local LoadstringRequire
     do
         local decompile = Quartz:GetFunction("decompile")
+        local getrenv = Quartz:GetFunction("getrenv") or getfenv
 
         LoadstringRequire = function(module)
             local Source = decompile(module)
@@ -19,7 +20,7 @@ function Replacement.CreateFunctionPatch(Quartz)
             --// Create proxy to require \\--
             setfenv(Callback, setmetatable({
                 require = function(module) return LoadstringRequire(module) end,
-            }, { __index = getfenv(Callback) }) :: any)
+            }, { __index = getrenv() }) :: any)
             
             --// Get Output \\--
             return Callback()
